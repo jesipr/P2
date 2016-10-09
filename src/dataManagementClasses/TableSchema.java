@@ -39,6 +39,13 @@ public class TableSchema {
 		return new TableSchema(n); 
 	}
 	
+	/**
+	 * Receives a RAF as a parameter. It reads the first two bytes to check the number of attributes
+	 * It then creates a local TableSchema and adds all the attributes adnr eturns it.
+	 * @param file
+	 * @return
+	 * @throws IOException
+	 */
 	public static TableSchema getInstance(RandomAccessFile file) throws IOException { 
 		file.seek(0);
 		short nAttrs = file.readShort(); 
