@@ -25,7 +25,7 @@ public class DoubleDataReader implements DataReader {
 	public Object readDataFromInputScanner(Scanner input) {
 		String s = input.nextLine(); 
 		try {
-			long v = Long.parseLong(s); //Should it be double???
+			double v = Double.parseDouble(s); 
 			return new Double(v); 
 		} catch (Exception e) { 
 			return null; 

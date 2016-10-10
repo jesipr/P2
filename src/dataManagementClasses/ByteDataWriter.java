@@ -11,7 +11,7 @@ public class ByteDataWriter implements DataWriter {
 	private ByteDataWriter() {}; 
 	
 	public void writeDataToArrayOfBytes(byte[] b, int index, Object rvalue) {
-		Integer value = (Integer) rvalue; 
+		int value = (byte) rvalue; 
 		int lSB; 
 		for (int i=0; i < BYTESIZE; i++) { 
 			lSB = 0x000000ff & value;
@@ -23,7 +23,7 @@ public class ByteDataWriter implements DataWriter {
 
 	@Override
 	public String toString(Object value) {
-		return String.format(DataUtils.INTEGERFORMAT, (Integer) value); 
+		return String.format(DataUtils.INTEGERFORMAT, (byte) value); 
 	}
 
 }

@@ -11,7 +11,7 @@ public class ShortDataWriter implements DataWriter {
 	private ShortDataWriter() {}; 
 	
 	public void writeDataToArrayOfBytes(byte[] b, int index, Object rvalue) {
-		Integer value = (Integer) rvalue; 
+		int value = (short) rvalue; 
 		int lSB; 
 		for (int i=0; i < SHORTSIZE; i++) { 
 			lSB = 0x000000ff & value;
@@ -23,7 +23,7 @@ public class ShortDataWriter implements DataWriter {
 
 	@Override
 	public String toString(Object value) {
-		return String.format(DataUtils.INTEGERFORMAT, (Integer) value); // TODO Have to change to SHORTFORMAT
+		return String.format(DataUtils.INTEGERFORMAT, (Short) value); // TODO Have to change to SHORTFORMAT
 	}
 
 }
