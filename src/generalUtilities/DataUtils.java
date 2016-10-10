@@ -13,10 +13,7 @@ public class DataUtils {
 	public static String BOOLEANFORMAT = "%"+VALUEWIDE + "s"; 
 	public static String FLOATFORMAT = "%"+VALUEWIDE + ".2f"; 
 	public static String DATEFORMAT ="%3s/%02d/%4d"; 
-	public static String DOUBLEFORMAT = "%" + VALUEWIDE + "Lf";
-	public static String BYTEFORMAT = "%" + VALUEWIDE +"hh"; //TODO Verify if correct
-	public static String LONGFORMAT = "%" + VALUEWIDE + "l";
-	public static String SHORTFORMAT = "%"+VALUEWIDE + "d"; //Integer value of short for octal use %o
+	
 	
 	
 	

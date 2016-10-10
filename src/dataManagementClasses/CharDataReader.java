@@ -9,8 +9,7 @@ public class CharDataReader implements DataReader {
 	private static final int CHARSIZE = Short.BYTES;
 	public static final CharDataReader INSTANCE = new CharDataReader();
 
-	private CharDataReader() {
-	};
+	private CharDataReader() {};
 
 	public Character readDataFromArrayOfBytes(byte[] b, int index) {
 		int value = 0;
@@ -27,6 +26,7 @@ public class CharDataReader implements DataReader {
 	@Override
 	public Object readDataFromInputScanner(Scanner input) {
 		String s = input.nextLine();
+		
 		if (s.length() == 1)
 			return new Character(s.charAt(0));
 		return null;
