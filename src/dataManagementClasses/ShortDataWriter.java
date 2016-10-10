@@ -11,7 +11,7 @@ public class ShortDataWriter implements DataWriter {
 	private ShortDataWriter() {}; 
 	
 	public void writeDataToArrayOfBytes(byte[] b, int index, Object rvalue) {
-		Integer value = (Integer) rvalue; 
+		int value = (short) rvalue; 
 		int lSB; 
 		for (int i=0; i < SHORTSIZE; i++) { 
 			lSB = 0x000000ff & value;

@@ -11,7 +11,7 @@ public class CharDataWriter implements DataWriter {
 	private CharDataWriter() {}; 
 	
 	public void writeDataToArrayOfBytes(byte[] b, int index, Object rvalue) {
-		Integer value = (Integer) rvalue; 
+		int value = (char) rvalue; 
 		int lSB; 
 		for (int i=0; i < INTSIZE; i++) { 
 			lSB = 0x000000ff & value;
@@ -23,7 +23,7 @@ public class CharDataWriter implements DataWriter {
 
 	@Override
 	public String toString(Object value) {
-		return String.format(DataUtils.INTEGERFORMAT, (Integer) value); 
+		return String.format(DataUtils.CHARFORMAT, (Character) value); 
 	}
 
 }

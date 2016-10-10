@@ -23,7 +23,7 @@ public class LongDataWriter implements DataWriter {
 
 	@Override
 	public String toString(Object value) {
-		return String.format(DataUtils.INTEGERFORMAT, (Integer) value); //TODO Change to LONGFORMAT
+		return String.format(DataUtils.LONGFORMAT, (Long) value); //TODO Change to LONGFORMAT
 	}
 
 }

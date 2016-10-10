@@ -25,7 +25,7 @@ public class DoubleDataWriter implements DataWriter {
 
 	@Override
 	public String toString(Object value) {
-		return String.format(DataUtils.INTEGERFORMAT, (Integer) value); //TODO Change to DOUBLEFORMAT
+		return String.format(DataUtils.FLOATFORMAT, (Double) value); //TODO Change to DOUBLEFORMAT
 	}
 
 }
