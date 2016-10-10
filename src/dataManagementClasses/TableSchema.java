@@ -30,9 +30,19 @@ public class TableSchema {
 		return attrs[index];
 	}
 
-	public boolean isValid() {
-		
-		return false;
+	public boolean isValid(RandomAccessFile file) throws IOException {
+
+		return getFirstPositionOfRecords() == file.getFilePointer();
+	}
+
+	public long getFirstPositionOfRecords() {
+		long par = 2 + 2 * getNumberOfAttrs();
+
+		for (int i = 0; i < getNumberOfAttrs(); i++) {
+			par += getAttr(i).getName().length() * 2;
+		}
+
+		return par;
 	}
 
 	public static TableSchema getInstance(int n) {

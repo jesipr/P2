@@ -23,7 +23,7 @@ public class ShortDataWriter implements DataWriter {
 
 	@Override
 	public String toString(Object value) {
-		return String.format(DataUtils.INTEGERFORMAT, (Integer) value); // TODO Have to change to SHORTFORMAT
+		return String.format(DataUtils.INTEGERFORMAT, (Short) value); // TODO Have to change to SHORTFORMAT
 	}
 
 }

@@ -26,6 +26,7 @@ public class DataFilePopulator {
 		int numbersOfAttributes;
 		String numbersOfAttributeString, attributeType, name;
 		TableSchema ts = null;
+		Table table = null;
 
 		// To this point we have verified arguments
 
@@ -34,18 +35,20 @@ public class DataFilePopulator {
 		try {
 			file = new File("inputData/" + args[0] + ".txt");
 			if (!file.exists()) {
+				
+				//FILE DOES NOT EXIST
+				
 				do {
 					do {
 						System.out.println("Enter positive value of attributes that this table will contain");
 						numbersOfAttributeString = sc.nextLine();
 					} while (!DataUtils.isValidInt(numbersOfAttributeString));
 					numbersOfAttributes = Integer.parseInt(numbersOfAttributeString);
-				} while (numbersOfAttributes <= 0); // Look for the comparator.
+				} while (numbersOfAttributes <= 0); 
 				// To this point we have how many attributes the user want.
 
 				// Create a TableSchema with the numbers of attributes specified
-				// by the
-				// user.
+				// by the user.
 				ts = TableSchema.getInstance(numbersOfAttributes);
 
 				int attrOffset = 0;
@@ -67,10 +70,34 @@ public class DataFilePopulator {
 				raf = new RandomAccessFile(file, "rw");
 				raf.seek(0);
 				ts.saveSchema(raf);
+				table = new Table(ts);
+				
+				//We have to add records to this file if the user wants.
 			} else {
+				
+				//FILE DOES EXIST
+				
 				raf = new RandomAccessFile(file, "rw");
 				ts = TableSchema.getInstance(raf);
+
+				if (!ts.isValid(raf)) {
+					System.out.println("File is not valid, closing...");
+					System.exit(0);
+				}
+				// File have a Valid Schema
+				// Lets verify if it have data, if it does, we need to verify is
+				// valid data, if it doesn't have data then we need to ask user
+				// to start adding data
+				
+				table = new Table(ts);
+				if(!(raf.getFilePointer()==raf.length())){
+					//RAF has records.
+					table.readTableDataFromFile(raf);
+				}
+				
 			}
+			
+			
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IllegalStateException e) {
@@ -79,30 +106,38 @@ public class DataFilePopulator {
 			e.printStackTrace();
 		}
 
-		Table table = new Table(ts);
-		Boolean keep = false;
-
-		do {
+		table.displayTable();
+		Boolean keep;
+		
+		System.out.println("Wish to add records? (true, false)");
+		keep = sc.nextBoolean();
+		sc.nextLine();
+		while(keep){
 			Record r = table.getNewRecordInstance();
 			r.readDataRecordFromUser(sc);
 			table.addRecord(r);
 			System.out.println("Enter more values? (true/false)");
 			keep = sc.nextBoolean();
 			sc.nextLine();
-		} while (keep);
-
+		}
+		try {
+			raf.seek(ts.getFirstPositionOfRecords());
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		for (int i = 0; i < table.getNumberOfRecords(); i++) {
 			try {
+				
 				table.getRecord(i).writeToFile(raf);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
 
-		table.displayTable();
-
 		System.out.println("Terminated");
 
 	}
+	
 
 }
