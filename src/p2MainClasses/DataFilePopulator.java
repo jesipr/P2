@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import dataManagementClasses.AttributeInSchema;
@@ -35,16 +36,16 @@ public class DataFilePopulator {
 		try {
 			file = new File("inputData/" + args[0] + ".txt");
 			if (!file.exists()) {
-				
-				//FILE DOES NOT EXIST
-				
+
+				// FILE DOES NOT EXIST
+
 				do {
 					do {
 						System.out.println("Enter positive value of attributes that this table will contain");
 						numbersOfAttributeString = sc.nextLine();
 					} while (!DataUtils.isValidInt(numbersOfAttributeString));
 					numbersOfAttributes = Integer.parseInt(numbersOfAttributeString);
-				} while (numbersOfAttributes <= 0); 
+				} while (numbersOfAttributes <= 0);
 				// To this point we have how many attributes the user want.
 
 				// Create a TableSchema with the numbers of attributes specified
@@ -71,12 +72,12 @@ public class DataFilePopulator {
 				raf.seek(0);
 				ts.saveSchema(raf);
 				table = new Table(ts);
-				
-				//We have to add records to this file if the user wants.
+
+				// We have to add records to this file if the user wants.
 			} else {
-				
-				//FILE DOES EXIST
-				
+
+				// FILE DOES EXIST
+
 				raf = new RandomAccessFile(file, "rw");
 				ts = TableSchema.getInstance(raf);
 
@@ -88,56 +89,80 @@ public class DataFilePopulator {
 				// Lets verify if it have data, if it does, we need to verify is
 				// valid data, if it doesn't have data then we need to ask user
 				// to start adding data
-				
+
 				table = new Table(ts);
-				if(!(raf.getFilePointer()==raf.length())){
-					//RAF has records.
+				if (!(raf.getFilePointer() == raf.length())) {
+					// RAF has records.
+
 					table.readTableDataFromFile(raf);
 				}
-				
+
 			}
-			
-			
+
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IllegalStateException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
-			e.printStackTrace();
+			e.getMessage();
+			System.out.println("Terminating");
+			System.exit(0);
 		}
 
 		table.displayTable();
-		Boolean keep;
 		
-		System.out.println("Wish to add records? (true, false)");
-		keep = sc.nextBoolean();
-		sc.nextLine();
-		while(keep){
+		
+		int decision = -1;
+		do {
+			try {
+				System.out.println("Wish to add records? (0 - no, 1 - yes)");
+				decision = sc.nextInt();
+				sc.nextLine();
+			} catch (InputMismatchException e) {
+				sc.nextLine();
+				System.out.println("Invalid input!");
+			}
+		} while (!(decision == 0 || decision == 1));
+
+		while (decision == 1) {
 			Record r = table.getNewRecordInstance();
 			r.readDataRecordFromUser(sc);
 			table.addRecord(r);
-			System.out.println("Enter more values? (true/false)");
-			keep = sc.nextBoolean();
-			sc.nextLine();
+			do {
+				try {
+					decision = -1;
+					System.out.println("Wish to add records? (0 - no, 1 - yes)");
+					decision = sc.nextInt();
+					sc.nextLine();
+				} catch (InputMismatchException e) {
+					sc.nextLine();
+					System.out.println("Invalid input!");
+				}
+			} while (!(decision == 0 || decision == 1));
 		}
+
+		
+		//Prepare file pointer to start writing all the Records
 		try {
 			raf.seek(ts.getFirstPositionOfRecords());
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		
+		//Starts writing the Records to the file.
 		for (int i = 0; i < table.getNumberOfRecords(); i++) {
 			try {
-				
+
 				table.getRecord(i).writeToFile(raf);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
+		table.displayTable();
 
+		sc.close();
 		System.out.println("Terminated");
 
 	}
-	
 
 }
