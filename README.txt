@@ -1,5 +1,6 @@
 To run this program from Eclipse:
 	Open the src/p2MainClasses/DataFilePopulator.java file
+	Under Run Configurations make sure to add the desired argument.
 	Run this file
 	
 To run this program from the terminal:
