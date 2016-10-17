@@ -16,7 +16,7 @@ import tableCollectionClasses.Table;
 public class DataFilePopulator {
 
 	public static void main(String[] args) {
-		if (args.length != 1) {
+		if (!DataUtils.isValidArgs(args)) {
 			System.out.println("Illegal Argument. Try again");
 			System.exit(0);
 		}
@@ -34,9 +34,8 @@ public class DataFilePopulator {
 		// Lets manage the RAF. The algorithm will behave different if the file
 		// already exist.
 		try {
-			file = new File("inputData/" + args[0] + ".txt");
+			file = new File("inputData/" + args[0]);
 			if (!file.exists()) {
-
 				// FILE DOES NOT EXIST
 
 				do {
@@ -53,7 +52,9 @@ public class DataFilePopulator {
 				ts = TableSchema.getInstance(numbersOfAttributes);
 
 				int attrOffset = 0;
-
+				
+				
+				//Ask user for attribute name and type.
 				for (int i = 0; i < numbersOfAttributes; i++) {
 					do {
 						System.out.println("Enter name of attribute #" + (i + 1) + ":");
@@ -67,6 +68,7 @@ public class DataFilePopulator {
 					ts.addAttribute(new AttributeInSchema(name, DataUtils.getTypeID(attributeType), attrOffset));
 					attrOffset += DataUtils.getTypeSize(attributeType);
 				}
+				
 				file.createNewFile();
 				raf = new RandomAccessFile(file, "rw");
 				raf.seek(0);
@@ -158,7 +160,7 @@ public class DataFilePopulator {
 				e.printStackTrace();
 			}
 		}
-		table.displayTable();
+		table.displayTable();  
 
 		sc.close();
 		System.out.println("Terminated");

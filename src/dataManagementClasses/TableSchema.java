@@ -100,6 +100,24 @@ public class TableSchema {
 			s += '=';
 		return s;
 	}
+	
+	/**
+	 * This method returns a String representation of the header of a table
+	 * It contains the Frequency and Percentage Column title.
+	 * @return a string representation of the table schema
+	 */
+	public String toFrequencyTableString() {
+		String s = "|";
+		for (int i = 0; i < attrs.length - 1; i++)
+			s += String.format(DataUtils.STRINGFORMAT, attrs[i].getName());
+		s += String.format(DataUtils.STRINGFORMAT, attrs[attrs.length - 1].getName()) + " ";
+		s += String.format(DataUtils.STRINGFORMAT, "Frequency") + " ";
+		s += String.format(DataUtils.STRINGFORMAT, "Percentage") + " |";
+		s += "\n";
+		for (int i = 0; i <= this.size * DataUtils.VALUEWIDE * 2 + 2; i++)
+			s += '=';
+		return s;
+	}
 
 	public int getDataRecordLength() {
 		int len = 0;
@@ -113,5 +131,13 @@ public class TableSchema {
 		TableSchema newSchema = new TableSchema(selectedAttrs.size());
 
 		return newSchema;
+	}
+	
+	public TableSchema(ArrayList<AttributeInSchema> t){
+		this.attrs = new AttributeInSchema[t.size()]; 
+		for(int i = 0; i<t.size();i++){
+			attrs[i] = t.get(i);
+			size++;
+		}
 	}
 }

@@ -170,4 +170,15 @@ public class DataUtils {
 		// if it reaches here, then the date is valid as per the specs given
 		return true;
 	}
+	
+	/**
+	 * Verify if the argument received is valid
+	 * @param args the arguments
+	 * @return whether the argument is valid
+	 */
+	public static boolean isValidArgs(String[] args){
+		if(args.length != 1)
+			return false;
+		return true;
+	}
 }
